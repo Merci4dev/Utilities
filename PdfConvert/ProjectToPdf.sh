@@ -149,7 +149,9 @@ def main():
 
     # Define the font directory path
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    font_dir = os.path.join(script_dir, 'fonts')
+    # font_dir = os.path.join(script_dir, 'fonts')
+    font_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fonts')
+
 
     # Check if all required font files are present
     required_fonts = [
