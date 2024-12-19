@@ -1,7 +1,6 @@
 import os
 import argparse
 from fpdf import FPDF
-import platform
 
 # Define a custom PDF class inheriting from FPDF to allow customization of PDF generation
 class PDF(FPDF):
@@ -16,7 +15,7 @@ class PDF(FPDF):
             print("Fonts loaded successfully.")
         except Exception as e:
             print(f"Error loading fonts: {str(e)}")
-
+        
         # Set the default font and enable auto page break
         self.set_font('DejaVu', '', 12)
         self.set_auto_page_break(auto=True, margin=15)
@@ -32,23 +31,6 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('DejaVu', 'I', 8)
         self.cell(0, 10, f'Page {self.page_no()}', align='C')
-
-# Function to find the directory containing the required fonts
-def find_font_dir():
-    common_dirs = [
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fonts'),  # Local folder
-        '/usr/share/fonts/truetype/dejavu',  # Common Linux location
-        '/usr/local/share/fonts',  # Another common Linux location
-        'C:\\Windows\\Fonts'  # Windows location
-    ]
-    for dir in common_dirs:
-        if all(os.path.isfile(os.path.join(dir, font)) for font in [
-            'DejaVuSans.ttf',
-            'DejaVuSans-Bold.ttf',
-            'DejaVuSans-Oblique.ttf',
-            'DejaVuSans-BoldOblique.ttf']):
-            return dir
-    return None
 
 # Function to determine the module name based on the file's relative path within the project
 def get_module_name(file_path, project_path):
@@ -165,14 +147,26 @@ def main():
     args = parser.parse_args()
     excludes = args.exclude
 
-    # Find font directory dynamically
-    font_dir = find_font_dir()
-    if not font_dir:
-        print("Error: DejaVu fonts not found. Please install or provide them.")
-        print("On Linux: sudo apt-get install fonts-dejavu-core")
+    # Define the font directory path
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # font_dir = os.path.join(script_dir, 'fonts')
+    font_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fonts')
+
+
+    # Check if all required font files are present
+    required_fonts = [
+        'DejaVuSans.ttf',
+        'DejaVuSans-Bold.ttf',
+        'DejaVuSans-Oblique.ttf',
+        'DejaVuSans-BoldOblique.ttf'
+    ]
+    missing_fonts = [font for font in required_fonts if not os.path.isfile(os.path.join(font_dir, font))]
+    if missing_fonts:
+        print(f"Error: The following fonts were not found in {font_dir}: {', '.join(missing_fonts)}")
+        print("Make sure to download all DejaVuSans font variants and place them in the correct directory.")
         return
 
-    generate_pdf(os.path.abspath(args.project_path), excludes, font_dir)
+    generate_pdf(args.project_path, excludes, font_dir)
 
 # Execute the main function
 if __name__ == "__main__":
