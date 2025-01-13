@@ -30,20 +30,37 @@
     Restart: Restarts the service in case of failure.
     WantedBy: Runs when the system reaches the "multi-user" runlevel.
 
+3. Asegúrate de que el script esté en una ubicación accesible globalmente (como
+    sudo cp /home/merci4dev/Desktop/DAVINCI\ RESOLVE/AutomaticConvertMp4ToMov/auto_convert_mp4_to_mov.sh /usr/local/bin/
 
-3. Enable and activate the service
+4. Verifica los permisos:
+    ls -l /usr/local/bin/auto_convert_mp4_to_mov.sh
+
+5. Si no tiene permisos de ejecución, otórgalos:
+    sudo chmod +x /usr/local/bin/auto_convert_mp4_to_mov.sh
+
+6. Enable and activate the service
     sudo systemctl daemon-reload
 
-4. Enable the service to start automatically on boot:
+7. Enable the service to start automatically on boot:
     sudo systemctl enable auto_convert_mp4_to_mov.service
 
-5. Start the service immediately:
+8. Start the service immediately:
     sudo systemctl start auto_convert_mp4_to_mov.service
 
-6. Verify that the service is running:
+9. Verify that the service is running:
     sudo systemctl status auto_convert_mp4_to_mov.service
 
-7. Optional - Service logs
+10. Optional - Service logs
     If you need to debug or review what the service is doing, you can view its logs with:
 
 journalctl -u auto_convert_mp4_to_mov.service -f
+
+11. Recargar el servicion si es necesario
+    sudo systemctl daemon-reload
+    sudo systemctl restart auto_convert_mp4_to_mov.service
+    sudo systemctl status auto_convert_mp4_to_mov.service
+
+
+
+sudo apt install inotify-tools

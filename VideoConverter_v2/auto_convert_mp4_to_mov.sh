@@ -32,6 +32,7 @@ CONVERTED_FOLDER="convertedVideos"
 DEFAULT_MONITOR_DIR="${HOME}/Desktop/DAVINCI RESOLVE/AutomaticConvertMp4ToMov"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+
 # ------------------ FUNCTIONS -------------------
 
 convert_file() {
